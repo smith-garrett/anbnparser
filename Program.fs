@@ -33,8 +33,9 @@ let parse (input: string) =
 
 [<EntryPoint>]
 let main args =
-    let result = parse args[0]
+    let input = args[0]
+    let result = parse input
     match result with
-    | true -> printf "String belongs to a^n b^n\n"
-    | _ -> printf "String doesn't belong to a^n b^n\n"
+    | true -> printf $"String '{input}' belongs to a^n b^n\n"
+    | _ -> printf $"String '{input}' doesn't belong to a^n b^n\n"
     0
