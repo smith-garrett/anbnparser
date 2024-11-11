@@ -17,18 +17,21 @@ let parse (input: string) =
     let ipt = sepInput input
 
     // Inner recursive function that works its way through the input
-    let rec innerparse lst stck =
+    let rec innerparse lst (stck: Stack): Result<Stack, string> =
         match lst with
-        | [] -> stck
+        | [] -> Ok stck
         | head :: rest when head = 'a' -> innerparse rest {stck with depth = stck.depth + 1}
+        | head :: next :: rest when head = 'b' && next = 'a' ->
+            printfn "Parse failed, no a's after first b"
+            Error "error"
         | head :: rest when head = 'b' -> innerparse rest {stck with depth = stck.depth - 1}
         // Should never get here, but needed for completeness of pattern match
         | head :: rest -> innerparse rest stck
     
     let stack = innerparse ipt {depth = 0}
 
-    match stack.depth with
-    | 0 -> true
+    match stack with
+    | Ok stack when stack.depth = 0 -> true
     | _ -> false
 
 [<EntryPoint>]
